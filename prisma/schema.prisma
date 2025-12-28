@@ -7,20 +7,8 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model RequestPage {
+model Page {
   id        String   @id @default(cuid())
   slug      String   @unique
-  title     String
   createdAt DateTime @default(now())
-
-  messages  Message[]
-}
-
-model Message {
-  id        String   @id @default(cuid())
-  content   String
-  createdAt DateTime @default(now())
-
-  pageId    String
-  page      RequestPage @relation(fields: [pageId], references: [id])
 }
