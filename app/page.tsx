@@ -2,7 +2,7 @@
   return (
     <main style={{ padding: 40 }}>
       <h1>Request Bridge</h1>
-      <p>Deployment working ✅</p>
+      <p>It works 🚀</p>
     </main>
   );
 }
