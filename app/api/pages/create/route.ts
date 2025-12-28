@@ -3,13 +3,10 @@ import { prisma } from "@/lib/prisma";
 import crypto from "crypto";
 
 export async function POST() {
-  const slug = crypto.randomBytes(4).toString("hex");
-  const accessToken = crypto.randomBytes(16).toString("hex");
-
   const page = await prisma.page.create({
     data: {
-      slug,
-      accessToken,
+      slug: crypto.randomBytes(4).toString("hex"),
+      accessToken: crypto.randomBytes(16).toString("hex"),
     },
   });
 
