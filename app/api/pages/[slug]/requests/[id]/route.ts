@@ -1,34 +1,31 @@
-// app/api/pages/[slug]/requests/[id]/route.ts
-
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
 type Params = {
-  params: Promise<{ slug: string; id: string }>;
+  params: {
+    slug: string;
+    id: string;
+  };
 };
 
-export async function DELETE(req: Request, { params }: Params) {
-  const { slug, id } = await params;
+export async function GET(
+  _req: Request,
+  { params }: Params
+) {
+  const { slug, id } = params;
 
-  const { searchParams } = new URL(req.url);
-  const token = searchParams.get("token");
-
-  if (!slug || !id || !token) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
-
-  const page = await prisma.requestPage.findUnique({
+  const page = await prisma.page.findUnique({
     where: { slug },
-    select: { id: true, accessToken: true },
+    select: { id: true },
   });
 
-  if (!page || page.accessToken !== token) {
-    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  if (!page) {
+    return NextResponse.json({ error: "Page not found" }, { status: 404 });
   }
 
-  await prisma.request.delete({
-    where: { id },
+  // Request table not implemented yet
+  return NextResponse.json({
+    requestId: id,
+    pageId: page.id,
   });
-
-  return NextResponse.json({ success: true });
 }
